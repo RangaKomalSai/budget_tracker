@@ -77,7 +77,18 @@ flutter:
    - family: IndieFlower
      fonts:
        - asset: fonts/IndieFlower-Regular.ttf
-
+   - family: NotoSans
+     fonts:
+       - asset: fonts/NotoSans-Regular.ttf
+   - family: Roboto
+     fonts:
+       - asset: fonts/Roboto-Regular.ttf
+   - family: Ubuntu
+     fonts:
+       - asset: fonts/Ubuntu-Regular.ttf
+   - family: Josefin
+     fonts:
+       - asset: fonts/JosefinSans-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
