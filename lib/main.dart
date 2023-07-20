@@ -164,21 +164,21 @@ void createContainer(String amount, String description) {
                     Expanded(
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: (){setState(() {
-                            visibleList = !visibleList;
-                            if(visibleList == true){showIcon1 = Icons.keyboard_double_arrow_up_rounded; r = 50.0; introVisible = false;}
-                            else {showIcon1 = Icons.keyboard_double_arrow_down_rounded; r = 130.0; introVisible = true;}
-                          });},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2.0),
-                            ),
-                            child: Icon(
-                              showIcon1,
-                              color: Colors.white,
-                            ),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 1.0),
+                          ),
+                          child: IconButton(
+                            onPressed:(){setState(() {
+                              visibleList = !visibleList;
+                              if(visibleList == true){showIcon1 = Icons.keyboard_double_arrow_up_rounded; r = 50.0; introVisible = false;}
+                              else {showIcon1 = Icons.keyboard_double_arrow_down_rounded; r = 130.0; introVisible = true;}
+                            });},
+                            icon: Icon(showIcon1),
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -186,6 +186,7 @@ void createContainer(String amount, String description) {
                   ],
                 ),
               ),
+              SizedBox(height: 10,),
               Visibility(
                 visible: visibleList,
                 child: Container(
