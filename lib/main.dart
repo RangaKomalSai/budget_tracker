@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'add_expenses.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,9 +34,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   String name = 'Name';
+  String showStars = '***';
   double r = 130.0;
-  double expensesTotal = 0;
+  int expensesTotal = 0;
   bool visibleList = false;
+  bool introVisible = true;
   IconData showIcon1 = Icons.keyboard_double_arrow_down_rounded;
   List<Container> containers = [];
 
@@ -53,6 +56,7 @@ void createContainer(String amount, String description) {
         color: Colors.grey[200],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             description,
@@ -62,13 +66,24 @@ void createContainer(String amount, String description) {
             ),
           ),
           Expanded(
-            child: Text(
-              amount,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 30.0,
-                // fontFamily: 'Roboto',
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(
+                  Icons.currency_rupee,
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+                Text(
+                  NumberFormat.decimalPattern().format(int.parse(amount)),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -110,12 +125,15 @@ void createContainer(String amount, String description) {
                 radius: r,
               ),
               SizedBox(height: 10.0),
-              Text(
-                'Welcome, $name!',
-                style: TextStyle(
-                fontSize: 30.0,
-                letterSpacing: 4.0,
-              ),
+              Visibility(
+                visible: introVisible,
+                child: Text(
+                  'Welcome, $name!',
+                  style: TextStyle(
+                  fontSize: 30.0,
+                  letterSpacing: 4.0,
+                ),
+                ),
               ),
               SizedBox(height: 10,),
               Container(
@@ -136,9 +154,9 @@ void createContainer(String amount, String description) {
                     ),
                     SizedBox(width: 10.0),
                     Text(
-                      '$expensesTotal',
+                      NumberFormat.decimalPattern().format(expensesTotal),
                       style: TextStyle(
-                        fontSize: 55.0,
+                        fontSize: 35.0,
                         // fontFamily: 'IndieFlower',
                         color: Colors.white,
                       ),
@@ -149,8 +167,8 @@ void createContainer(String amount, String description) {
                         child: GestureDetector(
                           onTap: (){setState(() {
                             visibleList = !visibleList;
-                            if(visibleList == true){showIcon1 = Icons.keyboard_double_arrow_up_rounded; r = 50.0;}
-                            else {showIcon1 = Icons.keyboard_double_arrow_down_rounded; r = 130.0;}
+                            if(visibleList == true){showIcon1 = Icons.keyboard_double_arrow_up_rounded; r = 50.0; introVisible = false;}
+                            else {showIcon1 = Icons.keyboard_double_arrow_down_rounded; r = 130.0; introVisible = true;}
                           });},
                           child: Container(
                             decoration: BoxDecoration(
