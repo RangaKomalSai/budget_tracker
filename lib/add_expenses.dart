@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 
+const List<String> list = <String>['Income', 'Expense'];
+
 class AddExpense extends StatefulWidget {
   final Function(String, String) onCreateContainer;
   AddExpense({required this.onCreateContainer});
@@ -14,6 +16,7 @@ class AddExpense extends StatefulWidget {
 class _AddExpenseState extends State<AddExpense> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  String selectedOption = 'Expense';
 
   @override
   void dispose() {
@@ -35,6 +38,9 @@ class _AddExpenseState extends State<AddExpense> {
             content: Text('Please enter a value in the text field.'),
             actions: [
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -158,6 +164,8 @@ class _AddExpenseState extends State<AddExpense> {
                   },
                 ),
               ),
+              // SizedBox(height: 10,),
+              Dropdown()
               SizedBox(height: 10,),
               ElevatedButton(
                 onPressed: (){
