@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:tracker/newcard.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+List<NewCard> cards = [];
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,6 +49,7 @@ class _HomeState extends State<Home> {
   IconData visibleIcon = Icons.visibility;
   IconData notVisibleIcon = Icons.visibility_off;
   List<Container> containers = [];
+
 
 void createContainer(String amount, String description) {
   setState(() {
@@ -96,6 +100,18 @@ void createContainer(String amount, String description) {
       ),
     ));
     expensesTotal += int.parse(amount);
+  });
+}
+
+void createNewCard(String amount, String description){
+  setState(() {
+    cards.add(NewCard(amount: amount, description: description));
+    expensesTotal += int.parse(amount);
+  });
+}
+void removeCard(int index) {
+  setState(() {
+    cards.removeAt(index);
   });
 }
 
@@ -257,9 +273,16 @@ void createContainer(String amount, String description) {
                   child: Container(
                     height: deviceHeight * 0.4,
                     child: ListView.builder(
-                      itemCount: containers.length,
+                      itemCount: cards.length,
                       itemBuilder: (context, index) {
-                        return containers[index];
+                        return Dismissible(
+                            key: Key(index.toString()),
+                            onDismissed: (direction){
+
+                        },
+                            child: cards[index],
+                        );
+                        // return cards[index];
                       },
                     ),
                   ),
@@ -272,9 +295,10 @@ void createContainer(String amount, String description) {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddExpense(onCreateContainer: createContainer))
+              context, MaterialPageRoute(builder: (context) => AddExpense(onCreateContainer: createContainer, onCreateCard: createNewCard,))
           );
         },
+        elevation: 5,
         backgroundColor: Colors.black,
         child: Icon(Icons.add),
 

@@ -1,13 +1,15 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables, unused_element
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables, unused_element, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'newcard.dart';
 
 const List<String> list = <String>['Income', 'Expense'];
 
 class AddExpense extends StatefulWidget {
   final Function(String, String) onCreateContainer;
-  AddExpense({required this.onCreateContainer});
+  final Function(String, String) onCreateCard;
+  AddExpense({required this.onCreateContainer, required this.onCreateCard});
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -55,8 +57,8 @@ class _AddExpenseState extends State<AddExpense> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        elevation: 0.0,
-        backgroundColor: Colors.white,
+        elevation: 1.0,
+        backgroundColor: Color.fromRGBO(222, 227, 227, 1),
         title: Row(
           children: [
             InkWell(
@@ -131,9 +133,9 @@ class _AddExpenseState extends State<AddExpense> {
                 child: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Josefin',
-                    fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Ubuntu',
+                    fontSize: 15,
                   ),
                   controller: descriptionController,
                   textInputAction: TextInputAction.done,
@@ -145,7 +147,7 @@ class _AddExpenseState extends State<AddExpense> {
                     floatingLabelStyle: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
-                        fontFamily: 'Josefin',
+                        fontFamily: 'Ubuntu',
                       fontSize: 15,
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -165,13 +167,18 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
               ),
               // SizedBox(height: 10,),
-              Dropdown()
+              DropDown(
+                data: [
+                  'Income', 'Expense'
+                ],
+                hint: 'Transaction Type',
+              ),
               SizedBox(height: 10,),
               ElevatedButton(
                 onPressed: (){
                   if(amountController.text.isEmpty || descriptionController.text.isEmpty){showAlertDialog(context);}
                   else{
-                  widget.onCreateContainer(amountController.text, descriptionController.text);
+                  widget.onCreateCard(amountController.text, descriptionController.text);
                   Navigator.pop(context);}
                 },
                 style: ElevatedButton.styleFrom(
