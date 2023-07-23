@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';
+import 'card_list.dart';
 import 'add_expenses.dart';
 
+List<NewCard> cards = [];
 
 class DropDown extends StatefulWidget {
   const DropDown({
@@ -65,6 +67,41 @@ class _DropDownState extends State<DropDown> {
   }
 }
 
+class DisplayCardList extends StatefulWidget {
+  const DisplayCardList({super.key});
+
+  @override
+  State<DisplayCardList> createState() => _DisplayCardListState();
+}
+
+class _DisplayCardListState extends State<DisplayCardList> {
+
+
+  void removeCard(int index) {
+    setState(() {
+      cards.removeAt(index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: cards.length,
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: Key(index.toString()),
+          onDismissed: (direction){
+
+          },
+          child: cards[index],
+        );
+        // return cards[index];
+      },
+    );
+  }
+}
+
+
 class NewCard extends StatefulWidget {
   const NewCard({
     required this.amount,
@@ -82,6 +119,21 @@ class NewCard extends StatefulWidget {
 class _NewCardState extends State<NewCard> {
   @override
   Widget build(BuildContext context) {
+
+    void updateExpenses(String amount){
+      setState(() {
+        expensesTotal += int.parse(amount);
+      });
+    }
+    void createNewCard(String amount, String description){
+      setState(() {
+        cards.add(NewCard(amount: amount, description: description));
+        expensesTotal += int.parse(amount);
+      });
+    }
+
+    // updateExpenses(widget.amount);
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(

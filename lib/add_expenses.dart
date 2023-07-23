@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'newcard.dart';
+import 'card_list.dart';
 
 const List<String> list = <String>['Income', 'Expense'];
 
 class AddExpense extends StatefulWidget {
-  final Function(String, String) onCreateContainer;
-  final Function(String, String) onCreateCard;
-  AddExpense({required this.onCreateContainer, required this.onCreateCard});
+  final VoidCallback onPressedCallback;
+  AddExpense({required this.onPressedCallback});
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -19,6 +19,7 @@ class _AddExpenseState extends State<AddExpense> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   String selectedOption = 'Expense';
+
 
   @override
   void dispose() {
@@ -116,7 +117,7 @@ class _AddExpenseState extends State<AddExpense> {
                     floatingLabelStyle: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
-                      fontFamily: 'Josefin'
+                      fontFamily: 'Ubuntu'
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -161,7 +162,8 @@ class _AddExpenseState extends State<AddExpense> {
                   onEditingComplete: (){
                     if(amountController.text.isEmpty || descriptionController.text.isEmpty){showAlertDialog(context);}
                     else{
-                      widget.onCreateContainer(amountController.text, descriptionController.text);
+                      NewCard(amount: amountController.text, description: descriptionController.text);
+                      expensesTotal += int.parse(amountController.text);
                       Navigator.pop(context);}
                   },
                 ),
@@ -175,11 +177,14 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               SizedBox(height: 10,),
               ElevatedButton(
-                onPressed: (){
+                onPressed: (){ setState(() {
                   if(amountController.text.isEmpty || descriptionController.text.isEmpty){showAlertDialog(context);}
                   else{
-                  widget.onCreateCard(amountController.text, descriptionController.text);
-                  Navigator.pop(context);}
+                    cardList.add(MyCard(amount: amountController.text, description: descriptionController.text));
+                    expensesTotal += int.parse(amountController.text);
+                    widget.onPressedCallback;
+                    Navigator.pop(context, 'result');}
+                });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

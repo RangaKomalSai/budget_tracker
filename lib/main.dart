@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:tracker/newcard.dart';
+import 'newcard.dart';
+import 'card_list.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
 
@@ -9,7 +10,7 @@ void main() {
   runApp(const MyApp());
 }
 
-List<NewCard> cards = [];
+int expensesTotal = 0;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,9 +38,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   String name = 'Name';
-  // String showAmount = '0';
   double r = 130.0;
-  int expensesTotal = 0;
   bool visibleList = false;
   bool introVisible = true;
   bool amountVisible = true;
@@ -47,73 +46,75 @@ class _HomeState extends State<Home> {
   bool showAmount = true;
   IconData showIcon1 = Icons.keyboard_double_arrow_down_rounded;
   IconData visibleIcon = Icons.visibility;
-  IconData notVisibleIcon = Icons.visibility_off;
-  List<Container> containers = [];
+  // IconData notVisibleIcon = Icons.visibility_off;
+  // List<Container> containers = [];
 
 
-void createContainer(String amount, String description) {
-  setState(() {
-    containers.add(Container(
+// void createContainer(String amount, String description) {
+//   setState(() {
+//     containers.add(Container(
+//
+//       width: MediaQuery.of(context).size.width,
+//       height: 70.0,
+//       margin: EdgeInsets.fromLTRB(28.0, 10.0, 28.0, 0.0),
+//       padding: EdgeInsets.fromLTRB(25.0, 0.0, 20.0, 0.0),
+//       alignment: Alignment.centerLeft,
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(20.0),
+//         color: Colors.white,
+//       ),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           Text(
+//             description,
+//             style: TextStyle(
+//               fontSize: 20.0,
+//               fontFamily: 'Poppins',
+//               fontWeight: FontWeight.w100
+//             ),
+//           ),
+//           Expanded(
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: [
+//                 Icon(
+//                   Icons.currency_rupee,
+//                   color: Colors.black,
+//                   size: 15.0,
+//                 ),
+//                 Text(
+//                   NumberFormat.decimalPattern().format(int.parse(amount)),
+//                   textAlign: TextAlign.end,
+//                   style: TextStyle(
+//                     fontSize: 15.0,
+//                     fontFamily: 'Poppins',
+//                     fontWeight: FontWeight.bold
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     ));
+//     expensesTotal += int.parse(amount);
+//   });
+// }
+  void createCard(String amount, String description){
+    setState(() {
+      cardList.add(MyCard(amount: amount, description: description));
+      expensesTotal += int.parse(amount);
+    });
+  }
+  void removeCard(index){
+    setState(() {
+      int newAmount =int.parse(cardList[index].amount);
+      expensesTotal -= newAmount;
+      cardList.removeAt(index);
+    });
+  }
 
-      width: MediaQuery.of(context).size.width,
-      height: 70.0,
-      margin: EdgeInsets.fromLTRB(28.0, 10.0, 28.0, 0.0),
-      padding: EdgeInsets.fromLTRB(25.0, 0.0, 20.0, 0.0),
-      alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: Colors.white,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            description,
-            style: TextStyle(
-              fontSize: 20.0,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w100
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(
-                  Icons.currency_rupee,
-                  color: Colors.black,
-                  size: 15.0,
-                ),
-                Text(
-                  NumberFormat.decimalPattern().format(int.parse(amount)),
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ));
-    expensesTotal += int.parse(amount);
-  });
-}
-
-void createNewCard(String amount, String description){
-  setState(() {
-    cards.add(NewCard(amount: amount, description: description));
-    expensesTotal += int.parse(amount);
-  });
-}
-void removeCard(int index) {
-  setState(() {
-    cards.removeAt(index);
-  });
-}
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +222,7 @@ void removeCard(int index) {
                           Visibility(
                             visible: showAmount,
                             child: Text(
-                              expensesTotal.toString(),
+                              NumberFormat.decimalPattern().format(int.parse(expensesTotal.toString())),
                               style: TextStyle(
                                 fontSize: 37.0,
                                 // fontFamily: 'IndieFlower',
@@ -273,18 +274,36 @@ void removeCard(int index) {
                   child: Container(
                     height: deviceHeight * 0.4,
                     child: ListView.builder(
-                      itemCount: cards.length,
+                      itemCount: cardList.length,
                       itemBuilder: (context, index) {
-                        return Dismissible(
-                            key: Key(index.toString()),
-                            onDismissed: (direction){
-
-                        },
-                            child: cards[index],
+                        return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                cardList[index],
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 8, 10, 0),
+                                  child: Container(
+                                    height: 55.0,
+                                    width: MediaQuery.of(context).size.width * 0.15,
+                                    decoration:  BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: Colors.black,
+                                    ),
+                                    child: IconButton(
+                                      onPressed: (){
+                                        removeCard(index);
+                                      },
+                                      icon: Icon(Icons.delete_rounded, size: 28, color: Colors.white,),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                         );
                         // return cards[index];
                       },
-                    ),
+                    )
                   ),
                 ),
               ],
@@ -295,8 +314,16 @@ void removeCard(int index) {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddExpense(onCreateContainer: createContainer, onCreateCard: createNewCard,))
-          );
+              context, MaterialPageRoute(builder: (context) => AddExpense(
+            onPressedCallback: () {setState(() {});},
+          )
+          )
+          ).then((result) {
+            // When returning from Page B, update the counter in Page A
+            if (result != null) {
+              setState(() {});
+            }
+          });;
         },
         elevation: 5,
         backgroundColor: Colors.black,
