@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'newcard.dart';
+import 'drop_down.dart';
 import 'card_list.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
@@ -101,16 +101,11 @@ class _HomeState extends State<Home> {
 //     expensesTotal += int.parse(amount);
 //   });
 // }
-  void createCard(String amount, String description){
-    setState(() {
-      cardList.add(MyCard(amount: amount, description: description));
-      expensesTotal += int.parse(amount);
-    });
-  }
   void removeCard(index){
     setState(() {
       int newAmount =int.parse(cardList[index].amount);
-      expensesTotal -= newAmount;
+      if(cardList[index].posOrNeg == true){expensesTotal -= newAmount;}
+      else{expensesTotal += newAmount;}
       cardList.removeAt(index);
     });
   }

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'newcard.dart';
+import 'drop_down.dart';
 import 'card_list.dart';
 
 const List<String> list = <String>['Income', 'Expense'];
@@ -18,6 +18,7 @@ class AddExpense extends StatefulWidget {
 class _AddExpenseState extends State<AddExpense> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController transactionController = TextEditingController();
   String selectedOption = 'Expense';
 
 
@@ -38,7 +39,7 @@ class _AddExpenseState extends State<AddExpense> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('Please enter a value in the text field.'),
+            content: Text('Please enter a value in all the fields.'),
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -139,7 +140,7 @@ class _AddExpenseState extends State<AddExpense> {
                     fontSize: 15,
                   ),
                   controller: descriptionController,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(21),
@@ -159,13 +160,7 @@ class _AddExpenseState extends State<AddExpense> {
                       borderRadius: BorderRadius.circular(21),
                     )
                   ),
-                  onEditingComplete: (){
-                    if(amountController.text.isEmpty || descriptionController.text.isEmpty){showAlertDialog(context);}
-                    else{
-                      NewCard(amount: amountController.text, description: descriptionController.text);
-                      expensesTotal += int.parse(amountController.text);
-                      Navigator.pop(context);}
-                  },
+                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 ),
               ),
               // SizedBox(height: 10,),
@@ -174,14 +169,23 @@ class _AddExpenseState extends State<AddExpense> {
                   'Income', 'Expense'
                 ],
                 hint: 'Transaction Type',
+                textEditingController: transactionController,
               ),
               SizedBox(height: 10,),
               ElevatedButton(
                 onPressed: (){ setState(() {
-                  if(amountController.text.isEmpty || descriptionController.text.isEmpty){showAlertDialog(context);}
+                  if(amountController.text.isEmpty || descriptionController.text.isEmpty || transactionController.text.isEmpty){showAlertDialog(context);}
                   else{
-                    cardList.add(MyCard(amount: amountController.text, description: descriptionController.text));
-                    expensesTotal += int.parse(amountController.text);
+                    if(transactionController.text == 'Income'){
+                      plusOrMinus = true;
+                      cardList.add(MyCard(amount: amountController.text, description: descriptionController.text, transaction: plusOrMinus, posOrNeg: true,));
+                      expensesTotal += int.parse(amountController.text);
+                    }
+                    else{
+                      plusOrMinus = false;
+                      cardList.add(MyCard(amount: amountController.text, description: descriptionController.text, transaction: plusOrMinus, posOrNeg: false,));
+                      expensesTotal -= int.parse(amountController.text);
+                    }
                     widget.onPressedCallback;
                     Navigator.pop(context, 'result');}
                 });

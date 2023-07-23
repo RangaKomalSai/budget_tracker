@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';
 import 'add_expenses.dart';
-import 'newcard.dart';
+import 'drop_down.dart';
 
 List<MyCard> cardList = [];
-
+bool plusOrMinus = false;
 
 class MyCard extends StatelessWidget {
   final String amount;
   final String description;
-  const MyCard({ required this.amount, required this.description});
+  final bool transaction;
+  final bool posOrNeg;
+  const MyCard({ required this.amount, required this.description, this.transaction = false, this.posOrNeg = false});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class MyCard extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w100
+                            fontWeight: FontWeight.w100,
                         ),
                       ),
                     ),
@@ -54,8 +56,13 @@ class MyCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Icon(
+                              transaction ? Icons.add : Icons.remove,
+                            size: 15,
+                            color: transaction ? Colors.green : Colors.red,
+                          ),
+                          Icon(
                             Icons.currency_rupee,
-                            color: Colors.black,
+                            color: transaction ? Colors.green : Colors.red,
                             size: 15.0,
                           ),
                           Padding(
@@ -66,7 +73,8 @@ class MyCard extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 15.0,
                                   fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold
+                                  fontWeight: FontWeight.bold,
+                                  color: transaction ? Colors.green : Colors.red,
                               ),
                             ),
                           ),
