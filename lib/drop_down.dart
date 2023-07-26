@@ -42,7 +42,8 @@ class _DropDownState extends State<DropDown> {
               child: Text(
                   value,
                 style: TextStyle(
-                  fontFamily: 'Ubuntu'
+                  fontFamily: 'Ubuntu',
+                  color: Color.fromRGBO(5, 185, 245,1)
                 ),
               ),
             );

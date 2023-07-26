@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'drop_down.dart';
 import 'card_list.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
 
-void main() {
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Budget Tracker',
       theme: ThemeData(
         fontFamily: 'NotoSans',
-        scaffoldBackgroundColor: Color.fromRGBO(222, 227, 227, 1)
+        scaffoldBackgroundColor: Colors.black
       ),
       home: const Home(),
     );
@@ -151,6 +154,7 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                     fontSize: 30.0,
                     letterSpacing: 4.0,
+                      color: Colors.white
                   ),
                   ),
                 ),
@@ -163,7 +167,7 @@ class _HomeState extends State<Home> {
                   // alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.0),
-                    color: Colors.black,
+                    color: Color.fromRGBO(41, 140, 227,1)
                   ),
                   child:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +287,7 @@ class _HomeState extends State<Home> {
                                     width: MediaQuery.of(context).size.width * 0.15,
                                     decoration:  BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
-                                      color: Colors.black,
+                                      color: Colors.red,
                                     ),
                                     child: IconButton(
                                       onPressed: (){
@@ -321,7 +325,7 @@ class _HomeState extends State<Home> {
           });;
         },
         elevation: 5,
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromRGBO(41, 140, 227,1),
         child: Icon(Icons.add),
 
       ),

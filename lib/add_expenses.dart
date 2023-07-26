@@ -59,8 +59,8 @@ class _AddExpenseState extends State<AddExpense> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        elevation: 1.0,
-        backgroundColor: Color.fromRGBO(222, 227, 227, 1),
+        elevation: 10.0,
+        backgroundColor: Color.fromRGBO(14, 27, 28,1),
         title: Row(
           children: [
             InkWell(
@@ -69,7 +69,7 @@ class _AddExpenseState extends State<AddExpense> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   semanticLabel: 'Back',
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -77,7 +77,7 @@ class _AddExpenseState extends State<AddExpense> {
             Text(
               'Add Amount',
               style: TextStyle(fontFamily: 'Josfie',
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -99,7 +99,8 @@ class _AddExpenseState extends State<AddExpense> {
                 child: TextField(
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Ubuntu'
+                    fontFamily: 'Ubuntu',
+                    color: Colors.white
                   ),
                   autofocus: true,
                   keyboardType: TextInputType.phone,
@@ -107,22 +108,30 @@ class _AddExpenseState extends State<AddExpense> {
                   controller: amountController,
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.currency_rupee,
-                      color: Colors.black,
+                    labelStyle: TextStyle(
+                      color: Colors.grey
                     ),
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(21),
                     ),
+                    prefixIcon: Icon(
+                      Icons.currency_rupee,
+                      color: Colors.white,
+                    ),
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(21),
+                    //   borderSide: BorderSide(color: Colors.white)
+                    // ),
                     labelText: 'Enter Amount',
                     floatingLabelStyle: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.normal,
                       fontFamily: 'Ubuntu'
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.black,
+                          color: Colors.white,
                           width: 2.0
                       ),
                       borderRadius: BorderRadius.circular(21),
@@ -138,23 +147,31 @@ class _AddExpenseState extends State<AddExpense> {
                       fontWeight: FontWeight.w800,
                       fontFamily: 'Ubuntu',
                     fontSize: 15,
+                    color: Colors.white
                   ),
                   controller: descriptionController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(21),
-                    ),
+                      labelStyle: TextStyle(
+                          color: Colors.grey
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(21),
+                      ),
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(21),
+                    // ),
                     labelText: 'Description',
                     floatingLabelStyle: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.normal,
                         fontFamily: 'Ubuntu',
                       fontSize: 15,
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.black,
+                        color: Colors.white,
                         width: 2.0
                       ),
                       borderRadius: BorderRadius.circular(21),
@@ -191,7 +208,7 @@ class _AddExpenseState extends State<AddExpense> {
                 });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(21.0), // Rounded corners
                   ),
@@ -200,7 +217,7 @@ class _AddExpenseState extends State<AddExpense> {
                 child: Text(
                     'Done',
                   style: TextStyle(
-
+                    color: Colors.black
                   ),
                 ),
               ),

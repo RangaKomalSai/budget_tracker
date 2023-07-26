@@ -32,7 +32,7 @@ class MyCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child : Card(
                 elevation: 0.0,
-                color: Colors.white,
+                color: Color.fromRGBO(255, 255, 255, 0.5),
                 margin: EdgeInsets.fromLTRB(28, 10, 28, 0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0), // Sets a border radius of 10.0
