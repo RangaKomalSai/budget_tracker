@@ -1,11 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tracker/drawer.dart';
+import 'package:tracker/login_page.dart';
+import 'package:tracker/start_page.dart';
+import 'auth.dart';
 import 'drop_down.dart';
 import 'card_list.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
+
+import 'login_page.dart';
+import 'login_page.dart';
+
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,12 +30,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: Utils.messengerKey,
+      debugShowCheckedModeBanner: false,
       title: 'Budget Tracker',
       theme: ThemeData(
         fontFamily: 'NotoSans',
-        scaffoldBackgroundColor: Colors.black
+        scaffoldBackgroundColor: Color.fromRGBO(222, 222, 222,1)
       ),
-      home: const Home(),
+      home: const StartPage(),
     );
   }
 }
@@ -39,6 +50,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  final user = FirebaseAuth.instance.currentUser;
 
   String name = 'Name';
   double r = 130.0;
@@ -120,24 +133,25 @@ class _HomeState extends State<Home> {
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0.0,
-      //   backgroundColor: Color.fromRGBO(240, 244, 245, 1),
-      //   title: const Text(
-      //     'Budget  Tracker',
-      //     style: TextStyle(
-      //       color: Colors.black87,
-      //       fontSize: 30.0,
-      //       fontWeight: FontWeight.bold,
-      //       letterSpacing: 4.0,
-      //       fontFamily: 'Ubuntu',
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      body: SingleChildScrollView(
-        child: SafeArea(
+    return SafeArea(
+      child: Scaffold(
+        drawer: MyDrawer(),
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Color.fromRGBO(27, 131, 129, 1),
+          title: const Text(
+            'Budget  Tracker',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 4.0,
+              fontFamily: 'Ubuntu',
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
@@ -150,11 +164,11 @@ class _HomeState extends State<Home> {
                 Visibility(
                   visible: introVisible,
                   child: Text(
-                    'Welcome, $name!',
+                    'Welcome, Name',
                     style: TextStyle(
                     fontSize: 30.0,
                     letterSpacing: 4.0,
-                      color: Colors.white
+                      color: Colors.black
                   ),
                   ),
                 ),
@@ -167,7 +181,13 @@ class _HomeState extends State<Home> {
                   // alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.0),
-                    color: Color.fromRGBO(41, 140, 227,1)
+                    // gradient: LinearGradient(
+                    //     colors: [Colors.green.shade300,Colors.green,Colors.blueAccent,Colors.blue],
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    //   stops: [0.0,0.3,0.8,1],
+                    // )
+                    color: Color.fromRGBO(11, 191, 186, 1)
                   ),
                   child:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,25 +329,25 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddExpense(
-            onPressedCallback: () {setState(() {});},
-          )
-          )
-          ).then((result) {
-            // When returning from Page B, update the counter in Page A
-            if (result != null) {
-              setState(() {});
-            }
-          });;
-        },
-        elevation: 5,
-        backgroundColor: Color.fromRGBO(41, 140, 227,1),
-        child: Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddExpense(
+              onPressedCallback: () {setState(() {});},
+            )
+            )
+            ).then((result) {
+              // When returning from Page B, update the counter in Page A
+              if (result != null) {
+                setState(() {});
+              }
+            });
+          },
+          elevation: 5,
+          backgroundColor: Color.fromRGBO(47, 37, 245, 1),
+          child: Icon(Icons.add),
 
+        ),
       ),
     );
   }

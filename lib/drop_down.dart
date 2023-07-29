@@ -43,7 +43,7 @@ class _DropDownState extends State<DropDown> {
                   value,
                 style: TextStyle(
                   fontFamily: 'Ubuntu',
-                  color: Color.fromRGBO(5, 185, 245,1)
+                  color: Color.fromRGBO(47, 37, 245, 1)
                 ),
               ),
             );
