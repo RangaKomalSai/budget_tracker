@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/login_page.dart';
+import 'package:tracker/Auth/login_page.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  final VoidCallback showLoginPage;
+  const SignupPage({super.key, required this.showLoginPage});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -25,27 +27,36 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       _isLoading = true;
     });
+    if (pswdController.text.trim() != confirmPswdController.text.trim()) {
+      Utils.showSnackBar("Passwords do not match.");
+      return;
+    }
     try {
-      if (pswdController.text.trim() != confirmPswdController.text.trim()) {
-        Utils.showSnackBar("Passwords do not match.");
-        return;
-      }
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: pswdController.text.trim()
       );
-    } catch (e){print('error in: $e'); Utils.showSnackBar(e.toString());}
+      addUserDetails(nameController.text.trim());
+    }on FirebaseAuthException catch (ex){Utils.showSnackBar(ex.code.toString());}
 
     setState(() {
       _isLoading = false;
     });
   }
-  
+
+  Future addUserDetails(String name) async{
+    await FirebaseFirestore.instance.collection('users').add({
+      'Name': name
+    });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
+    nameController.dispose();
     emailController.dispose();
     pswdController.dispose();
+    confirmPswdController.dispose();
     super.dispose();
   }
 
@@ -240,12 +251,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
-                      },
+                      onTap: widget.showLoginPage,
                       child: Text(
                         ' Login',
                         style: TextStyle(

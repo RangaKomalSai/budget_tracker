@@ -4,16 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/drawer.dart';
-import 'package:tracker/login_page.dart';
-import 'package:tracker/start_page.dart';
-import 'auth.dart';
+import 'package:tracker/Auth/login_page.dart';
+import 'package:tracker/Auth/start_page.dart';
 import 'drop_down.dart';
 import 'card_list.dart';
 import 'add_expenses.dart';
 import 'package:intl/intl.dart';
-
-import 'login_page.dart';
-import 'login_page.dart';
 
 
 Future main() async{

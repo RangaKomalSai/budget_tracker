@@ -2,12 +2,13 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tracker/signup_page.dart';
+import 'package:tracker/Auth/signup_page.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final VoidCallback showSignupPage;
+  const LoginPage({super.key, required this.showSignupPage});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -31,9 +32,8 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: pswdController.text.trim()
       );
-    } catch (e){
-      print('error in: $e');
-      Utils.showSnackBar(e.toString());
+    }on FirebaseAuthException catch (ex){
+      Utils.showSnackBar(ex.code.toString());
     }
     setState(() {
       _isLoading = false;
@@ -182,12 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignupPage()),
-                            );
-                          },
+                          onTap: widget.showSignupPage,
                           child: Text(
                             ' Create Now',
                             style: TextStyle(
